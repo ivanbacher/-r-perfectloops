@@ -40,12 +40,14 @@ function drawVis(tree) {
     var width = 900;
     var height = 900;
 
-    var svg = d3.select('body').append("div")
-        .attr("id", "canvas")
+    var svg = d3.select('body').append('div')
         .style("width", width + 'px')
         .style("height", height + 'px')
-        .style("margin", "0 auto")
         .style("border", "1px solid back")
+        .style('position', 'absolute')
+        .style('left', function(d) { return (document.body.clientWidth/2)-(width/2) + "px" })
+        .style('top', function(d) { return 50 + "px" })
+
 
     var pack = d3.pack()
         .size([width,height])
