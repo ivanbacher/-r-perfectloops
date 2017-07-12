@@ -1,1 +1,0 @@
-module.exports = require("npm:d3-shape@1.1.1/build/d3-shape.js");
