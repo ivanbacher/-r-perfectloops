@@ -53,9 +53,35 @@ function drawVis(tree) {
         .size([width,height])
         .padding(10);
 
-    var root = d3.hierarchy(tree)
-        .sum( function(d) { return d.score; } );
+    var treemap = d3.treemap()
+        .size([width, height])
+        .padding(10)
+        .round(true);
 
+    var root = d3.hierarchy(tree)
+        .sum( function(d) { return d.score; } )
+        .sort(function(a, b) { return b.height - a.height || b.score - a.score; });
+
+    treemap(root);
+
+    let nodes = svg.selectAll('div')
+        .data(root.descendants())
+        .enter().append('div')
+            .style('width', function(d) { return d.x1 - d.x0 + 'px' } )
+            .style('height', function(d) { return d.y1 - d.y0 + 'px' } )
+            .style('border', '1px solid black')
+            .style('position', 'absolute')
+            .style('left', function(d) { return d.x0 + "px" })
+            .style('top', function(d) { return d.y0 + "px" })
+            .style('overflow', 'hidden')
+                .append('a')
+                    .attr('href', function(d) { return d.data.url })
+                .append('img')
+                    .attr('src', function(d) { return d.data.url })
+                    .attr('width', function(d) { return d.x1 - d.x0 } )
+                    .attr('height', function(d) { return d.y1 - d.y0  } )
+                    .select(function(d) { return this.parentNode; })    
+    /*    
     pack(root);
     
     let nodes = svg.selectAll('div')
@@ -77,4 +103,5 @@ function drawVis(tree) {
                     .attr('width', function(d) { return d.r*2 } )
                     .attr('height', function(d) { return d.r*2  } )
                     .select(function(d) { return this.parentNode; })
+    */
 }
